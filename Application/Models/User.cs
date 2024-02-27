@@ -17,6 +17,8 @@ public class User : BaseModel
     public string Password { get; set; }
 
     public string? RememberToken { get; set; }
+    
+    public string JobTitle { get; set; }
 
     public DateTime? EmailVerifiedAt { get; set; }
 

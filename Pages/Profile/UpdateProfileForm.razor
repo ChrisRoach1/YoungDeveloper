@@ -21,7 +21,8 @@
         Form info = new()
 	    {
 		    Name = currentUser.Name,
-		    Email = currentUser.Email
+		    Email = currentUser.Email,
+            JobTitle = currentUser.JobTitle
 	    };
         return info;
     }
@@ -40,6 +41,7 @@
         // update user info
         currentUser.Email = ProfileForm.Email;
         currentUser.Name = ProfileForm.Name;
+        currentUser.JobTitle = ProfileForm.JobTitle;
         Db.Users.Save(currentUser);
 
         // re-login user so cookie info reflects updated values
@@ -63,6 +65,8 @@
         [Required]
         public string Name { get; set; } = default!;
 
+        public string JobTitle { get; set; } = default!;
+
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         [Required(ErrorMessage = "Please enter a valid email address")]
         public string Email { get; set; } = default!;
@@ -71,13 +75,20 @@
 
 <EditForm Model="ProfileForm" OnValidSubmit="OnSubmit" FormName="ProfileForm" method="post" Enhance class="max-w-2xl grid grid-cols-1 gap-y-6">
     <DataAnnotationsValidator />
-	<label class="form-control w-full">
-		<div class="label">
-			<span class="label-text font-medium">Name</span>
-		</div>
-		<InputText @bind-Value="ProfileForm.Name" class="input input-bordered w-full" />
-		<ValidationMessage For="() => ProfileForm.Name" />
+    <label class="form-control w-full">
+        <div class="label">
+            <span class="label-text font-medium">Name</span>
+        </div>
+        <InputText @bind-Value="ProfileForm.Name" class="input input-bordered w-full" />
+        <ValidationMessage For="() => ProfileForm.Name" />
     </label>
+   	<label class="form-control w-full">
+   		<div class="label">
+   			<span class="label-text font-medium">Job Title</span>
+   		</div>
+   		<InputText @bind-Value="ProfileForm.JobTitle" class="input input-bordered w-full" />
+   		<ValidationMessage For="() => ProfileForm.JobTitle" />
+       </label> 
     <label class="form-control w-full">
         <div class="label">
             <span class="label-text font-medium">Email address</span>

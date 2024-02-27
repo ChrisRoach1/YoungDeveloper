@@ -27,6 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Pages\Projects\" />
 		<Folder Include="Storage\Logging\" />
 		<Folder Include="Storage\Mail\" />
 		<Folder Include="wwwroot\build\" />

@@ -28,6 +28,7 @@
 		{
 			Name = Form.Name,
 			Email = Form.Email,
+			JobTitle = Form.JobTitle,
 			Password = UsersService.GetSha256Hash(Form.Password),
 			CreatedAt = DateTime.UtcNow
 		};
@@ -60,6 +61,7 @@
 	{
 		public string Name { get; set; } = String.Empty;
 		public string Email { get; set; } = String.Empty;
+		public string JobTitle { get; set; } = String.Empty;
 		public string Password { get; set; } = String.Empty;
 		public string ConfirmPassword { get; set; } = String.Empty;
 	}
@@ -136,7 +138,14 @@
 				</div>
 				<InputText @bind-Value="Form.Name" class="input input-bordered w-full" />
 				<ValidationMessage For="() => Form.Name" />
-            </label>
+			</label>
+			<label class="form-control w-full">
+				<div class="label">
+					<span class="label-text font-medium">Job title</span>
+				</div>
+				<InputText @bind-Value="Form.JobTitle" class="input input-bordered w-full" />
+				<ValidationMessage For="() => Form.JobTitle" />
+            </label>			
 			<label class="form-control w-full">
 				<div class="label">
 					<span class="label-text font-medium">Email</span>
@@ -153,7 +162,7 @@
             </label>
 			<label class="form-control w-full">
 				<div class="label">
-					<span class="label-text font-medium">Confrim Password</span>
+					<span class="label-text font-medium">Confirm Password</span>
 				</div>
 				<InputText @bind-Value="Form.ConfirmPassword" type="password" class="input input-bordered w-full" />
 				<ValidationMessage For="() => Form.ConfirmPassword" />
