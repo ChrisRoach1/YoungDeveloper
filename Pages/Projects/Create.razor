@@ -1,0 +1,73 @@
+@page "/projects/create"
+@attribute [Authorize]
+
+<PageTitle>Create Project</PageTitle>
+
+@code {
+    [Inject] ProjectService ProjectService { get; set; } = default!;
+    [CascadingParameter] public HttpContext HttpContext { get; set; } = default!;
+    [Inject] NavigationManager NavManager { get; set; } = default!;
+
+    [SupplyParameterFromForm(Name = "ProjectForm")]
+    public Form ProjectForm { get; set; }
+
+
+    public class Form
+    {
+        [Required] public string Title { get; set; } = default!;
+
+        [Required] public string Description { get; set; } = default!;
+    }
+
+    protected override void OnInitialized()
+    {
+        ProjectForm ??= new();
+    }
+
+    private async Task OnSubmit()
+    {
+        await ProjectService.CreateProjectAsync(ProjectForm.Title, ProjectForm.Description);
+
+        HttpContext.SetFlash("success", "Project created.");
+        NavManager.NavigateTo("/projects/create");
+    }
+
+}
+
+
+<section>
+    <article class="space-y-4">
+        <h1 class="text-3xl font-bold">
+            Create a Project
+        </h1>
+        <div class="space-y-12">
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <EditForm Model="ProjectForm" OnValidSubmit="OnSubmit" FormName="ProjectForm" method="post" Enhance class="max-w-2xl grid grid-cols-1 gap-y-6">
+                        <DataAnnotationsValidator/>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-medium">Title</span>
+                            </div>
+                            <InputText @bind-Value="ProjectForm.Title" class="input input-bordered w-full"/>
+                            <ValidationMessage For="() => ProjectForm.Title"/>
+                        </label>
+                        <label class="form-control w-full">
+                            <div class="label">
+                                <span class="label-text font-medium">Description</span>
+                            </div>
+                            <InputTextArea @bind-Value="ProjectForm.Description" class="textarea textarea-bordered textarea-sm w-full max-w-xl"/>
+                            <ValidationMessage For="() => ProjectForm.Description"/>
+                        </label>
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn btn-neutral">
+                                <span class="loading loading-spinner loading-xs htmx-indicator"></span>
+                                Save
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>

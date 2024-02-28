@@ -11,6 +11,8 @@ public class DatabaseContext : DbContext
     public virtual DbSet<User> Users { set; get; }
     public virtual DbSet<Role> Roles { set; get; }
     public virtual DbSet<UserRole> UserRoles { get; set; }
+    
+    public virtual DbSet<Project> Projects { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -40,6 +42,14 @@ public class DatabaseContext : DbContext
             entity.Property(e => e.RoleId);
             entity.HasOne(d => d.Role).WithMany(p => p.UserRoles).HasForeignKey(d => d.RoleId);
             entity.HasOne(d => d.User).WithMany(p => p.UserRoles).HasForeignKey(d => d.UserId);
+        });
+
+        builder.Entity<Project>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Title).HasMaxLength(500).IsRequired();
+            entity.Property(e => e.Description).HasMaxLength(2500).IsRequired();
+            entity.HasOne(e => e.User).WithMany(e => e.Projects).HasForeignKey(e => e.CreatedById);
         });
 
         builder.Entity<Role>().HasData(

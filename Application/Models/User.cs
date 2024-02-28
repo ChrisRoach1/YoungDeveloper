@@ -23,6 +23,8 @@ public class User : BaseModel
     public DateTime? EmailVerifiedAt { get; set; }
 
     public virtual ICollection<UserRole> UserRoles { get; set; }
+    
+    public virtual ICollection<Project> Projects { get; set; }
 
     [NotMapped]
     public bool IsAuthenticated { get; set; }

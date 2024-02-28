@@ -11,6 +11,7 @@ using FluentValidation;
 using YoungDeveloper.Pages.Auth;
 using YoungDeveloper.Application.Models;
 using Microsoft.Extensions.DependencyInjection;
+using YoungDeveloper.Application.Services;
 
 namespace YoungDeveloper.Application.Startup;
 
@@ -41,11 +42,13 @@ public static class AppServicesRegistration
     private static IServiceCollection AddCustomServices(this IServiceCollection services)
     {
         // add custom services
+        services.AddHttpContextAccessor();
         services.AddScoped<UsersService>();
         services.AddScoped<RolesService>();
         services.AddScoped<IAuthValidator, SparkAuthValidator>();
         services.AddScoped<AuthService>();
         services.AddScoped<IValidator<Register.RegisterForm>, Register.RegisterFormValidator>();
+        services.AddScoped<ProjectService>();
         return services;
     }
 
