@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using Spark.Library.Extensions;
 using YoungDeveloper.Application.Database;
 using YoungDeveloper.Application.Models;
@@ -11,26 +12,35 @@ public class ProjectService(DatabaseContext db, IHttpContextAccessor context)
     private readonly DatabaseContext _db = db;
     private readonly HttpContext _context = context.HttpContext;
 
-    public async Task<Project> CreateProjectAsync(string title, string description)
+    public Project? CreateProject(string title, string description)
     {
 
-        var userID = _context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = _context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        if (!String.IsNullOrEmpty(userID))
+        if (string.IsNullOrEmpty(userId)) return null;
+        
+        Project project = new()
         {
-            Project project = new()
-            {
-                Title = title,
-                Description = description,
-                CreatedById = Convert.ToInt32(userID)
-            };       
+            Title = title,
+            Description = description,
+            CreatedById = Convert.ToInt32(userId)
+        };       
             
-            _db.Projects.Save(project);
+        _db.Projects.Save(project);
 
-            return project;
+        return project;
+
+    }
+
+    public async Task<List<Project>?> GetProjectsBySearch(string searchString)
+    {
+        if (string.IsNullOrEmpty(searchString))
+        {
+            return await _db.Projects.Include(x => x.User).ToListAsync(); 
         }
-
-        return null;
+        
+        return await _db.Projects.Include(x => x.User).Where(x => x.Title.Contains(searchString) || x.Description.Contains(searchString))
+            .ToListAsync();
     }
 
 }

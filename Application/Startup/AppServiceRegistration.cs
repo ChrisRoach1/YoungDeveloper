@@ -30,7 +30,7 @@ public static class AppServicesRegistration
         services.AddEventServices();
         services.AddEvents();
         services.AddMailer(config);
-        services.AddRazorComponents();
+        services.AddRazorComponents().AddInteractiveServerComponents();
         services.AddDistributedMemoryCache();
         services.AddSession(options => {
             options.Cookie.Name = ".YoungDeveloper";

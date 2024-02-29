@@ -15,6 +15,14 @@
             @if (PageState.User.IsAuthenticated)
             {
                 <li>
+                    <a href="/projects">View Projects</a>
+                </li>
+
+                <li>
+                    <a href="/projects/create">Create a Project</a>
+                </li>
+
+                <li>
                     <details>
                         <summary>
                             @PageState.User.Name
@@ -32,11 +40,6 @@
                             </li>
                         </ul>
                     </details>
-                </li>
-                <li>
-                    <li>
-                        <a class="btn btn-primary" href="/projects/create">Create a project</a>
-                    </li>
                 </li>
             }
             else
