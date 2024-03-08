@@ -26,6 +26,8 @@ public class User : BaseModel
     
     public virtual ICollection<Project> Projects { get; set; }
 
+    public virtual ICollection<ProjectRequest> ProjectRequests { get; set; }
+
     [NotMapped]
     public bool IsAuthenticated { get; set; }
 }

@@ -1,0 +1,30 @@
+@rendermode InteractiveServer
+
+@code {
+    [Inject] ProjectService ProjectService { get; set; } = default!;
+    [Inject] ProjectRequestService ProjectRequestService { get; set; } = default!;
+    [Inject] NavigationManager NavManager { get; set; } = default!;
+    [CascadingParameter] public PageState PageState { get; set; } = default!;
+
+    [Parameter] public int projectId { get; set; }
+    [Parameter] public bool disabled { get; set; }
+
+    public string searchString { get; set; } = default!;
+
+    List<Project>? Projects { get; set; } = default!;
+
+
+    private async Task requestToJoinProject()
+    {
+        var request = ProjectRequestService.CreateProjectRequest(projectId);
+
+        NavManager.NavigateTo("/projects");
+    }
+
+
+}
+
+<button disabled="@disabled" class="btn btn-neutral" @onclick="() => requestToJoinProject()">
+    Request to join?
+</button>
+

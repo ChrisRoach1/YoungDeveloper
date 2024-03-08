@@ -20,7 +20,7 @@ public class UsersService
 
     public async Task<User?> FindUserAsync(int userId)
     {
-        return await _db.Users.FindAsync(userId);
+        return await _db.Users.Include(x => x.Projects).Include(x => x.ProjectRequests).FirstAsync(x => x.Id == userId);
     }
 
     public async Task<User?> FindUserByCredsAsync(string email, string password)

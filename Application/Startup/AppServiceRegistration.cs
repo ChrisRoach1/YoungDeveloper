@@ -49,6 +49,7 @@ public static class AppServicesRegistration
         services.AddScoped<AuthService>();
         services.AddScoped<IValidator<Register.RegisterForm>, Register.RegisterFormValidator>();
         services.AddScoped<ProjectService>();
+        services.AddScoped<ProjectRequestService>();
         return services;
     }
 

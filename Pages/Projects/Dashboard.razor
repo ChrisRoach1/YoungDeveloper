@@ -1,0 +1,34 @@
+@page "/projects/dashboard"
+@rendermode InteractiveServer
+
+@code {
+    [Inject] ProjectService ProjectService { get; set; } = default!;
+    [Inject] NavigationManager NavManager { get; set; } = default!;
+
+    public string searchString { get; set; } = default!;
+
+    List<Project>? Projects { get; set; } = default!;
+
+    protected override async void OnInitialized()
+    {
+        Projects = await ProjectService.GetCurrentUsersProjects();
+    }
+}
+
+<PageTitle>Projects Dashboard</PageTitle>
+
+
+@foreach (var project in Projects)
+{
+    <div class="card bg-base-100 shadow-xl mb-3">
+        <div class="card-body">
+            <h6 class="text-xs color">@project.CreatedAt.ToString("dd-MMM-yyyy")</h6>
+            <h1 class="text-3xl font-bold">
+                @project.Title
+            </h1>
+            <p>
+                @project.Description
+            </p>
+        </div>
+    </div>
+}

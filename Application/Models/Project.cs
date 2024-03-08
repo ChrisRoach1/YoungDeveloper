@@ -5,11 +5,14 @@ namespace YoungDeveloper.Application.Models;
 
 public class Project : BaseModel
 {
-    
-    public string Title { get; set; }
-    
-    public string Description { get; set; }
-    
-    public int CreatedById { get; set; } 
 
-    public virtual User User { get; set; }}
+    public string Title { get; set; } = default!;
+
+    public string Description { get; set; } = default!;
+
+    public int CreatedById { get; set; }
+
+    public virtual User User { get; set; }
+
+    public virtual ICollection<ProjectRequest> ProjectRequests {  get; set; }
+}

@@ -6,39 +6,37 @@ using YoungDeveloper.Application.Models;
 
 namespace YoungDeveloper.Application.Services;
 
-public class ProjectService(DatabaseContext db, IHttpContextAccessor context)
+public class ProjectRequestService(DatabaseContext db, IHttpContextAccessor context)
 {
 
     private readonly DatabaseContext _db = db;
     private readonly HttpContext _context = context.HttpContext;
 
-    public Project? CreateProject(string title, string description)
+    public ProjectRequest? CreateProjectRequest(int projectId)
     {
 
         var userId = _context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(userId)) return null;
-        
-        Project project = new()
+
+        ProjectRequest request = new()
         {
-            Title = title,
-            Description = description,
-            CreatedById = Convert.ToInt32(userId)
-        };       
-            
-        _db.Projects.Save(project);
+            ProjectId = projectId,
+            UserId = Convert.ToInt32(userId)
+        };
 
-        return project;
+        _db.ProjectRequests.Save(request);
 
+        return request;
     }
 
     public async Task<List<Project>?> GetProjectsBySearch(string searchString)
     {
         if (string.IsNullOrEmpty(searchString))
         {
-            return await _db.Projects.Include(x => x.User).ToListAsync(); 
+            return await _db.Projects.Include(x => x.User).ToListAsync();
         }
-        
+
         return await _db.Projects.Include(x => x.User).Where(x => x.Title.Contains(searchString) || x.Description.Contains(searchString))
             .ToListAsync();
     }
